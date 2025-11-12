@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X O Game</title>
+<style>
+  /* ==== GENERAL STYLING ==== */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  /* ==== GRID LAYOUT WITH ADS ==== */
+  .layout {
+    display: grid;
+    grid-template-areas:
+      "top top top"
+      "left center right"
+      "bottom bottom bottom";
+    grid-template-columns: 120px auto 120px;
+    grid-template-rows: 80px auto 80px;
+    height: 100%;
+    width: 100%;
+  }
+
+  .ad-top, .ad-bottom, .ad-left, .ad-right {
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ad-top    { grid-area: top; }
+  .ad-left   { grid-area: left; }
+  .ad-right  { grid-area: right; }
+  .ad-bottom { grid-area: bottom; }
+
+  /* ==== CENTER GAME AREA ==== */
+  .center {
+    grid-area: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ==== PAGES ==== */
+  .page { display: none; text-align: center; }
+  .active { display: block; }
+
+  h1, h2 {
+    color: #00fff5;
+    text-shadow: 0 0 10px #00fff5;
+    margin-bottom: 20px;
+  }
+
+  button {
+    background: linear-gradient(90deg, #ff512f, #dd2476);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px;
+    font-size: 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #ff512f;
+  }
+
+  /* ==== TIC TAC TOE GRID ==== */
+  .board-wrapper {
+    display: inline-block;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00fff5;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 110px);
+    grid-template-rows: repeat(3, 110px);
+    border: 5px solid #00fff5;
+    border-radius: 10px;
+  }
+
+  .cell {
+    font-size: 50px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 3px solid #00fff5;
+    transition: all 0.2s ease;
+    background: rgba(15, 52, 96, 0.9);
+  }
+
+  .cell:hover {
+    background: rgba(0, 255, 245, 0.2);
+    box-shadow: inset 0 0 10px #00fff5;
+  }
+
+  .status {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #f0f0f0;
+  }
+
+  /* ==== ALERT BOX ==== */
+  .alertBox {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    display: none;
+  }
+
+  .alertContent {
+    background: linear-gradient(145deg, #2b5876, #4e4376);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px #00fff5;
+  }
+
+  .alertContent h3 {
+    color: #00fff5;
+    margin-bottom: 20px;
+  }
+.a {
+    background: linear-gradient(90deg, #ff512f, #dd2476);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px;
+    font-size: 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #ff512f;
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ==== AD PLACEMENTS ==== -->
+  <div class="ad-top">
+    <!-- 🔹 INSERT YOUR TOP AD LINK / SCRIPT HERE -->
+  </div>
+  <div class="ad-left">
+    <!-- 🔹 INSERT YOUR LEFT AD LINK / SCRIPT HERE -->
+  </div>
+  <div class="ad-right">
+    <!-- 🔹 INSERT YOUR RIGHT AD LINK / SCRIPT HERE -->
+  </div>
+  <div class="ad-bottom">
+    <!-- 🔹 INSERT YOUR BOTTOM AD LINK / SCRIPT HERE -->
+  </div>
+
+  <!-- ==== MAIN CENTER CONTENT ==== -->
+  <div class="center">
+    <!-- Page 1: Menu -->
+     
+    <div id="menu" class="page active">
+      <img width="100" height="100" src="XOgame logo.png"/>
+      <h1>Tic Tac Toe</h1>
+      <button onclick="chooseMode('1')">1 Player</button>
+      <button onclick="chooseMode('2')">2 Player</button>
+      <br><button><a href="index.html">Choose another game</a></button>
+    </div>
+
+    <!-- Page 2: Difficulty -->
+    <div id="difficulty" class="page">
+      <h2>Select Difficulty</h2>
+      <button onclick="startGame('easy')">Easy</button>
+      <button onclick="startGame('medium')">Medium</button>
+      <button onclick="startGame('hard')">Hard</button>
+    </div>
+
+    <!-- Page 3: Game -->
+    <div id="game" class="page">
+      <h2 id="gameTitle"></h2>
+      <div class="board-wrapper">
+        <div class="grid" id="board"></div>
+      </div>
+      <div class="status" id="status"></div>
+      <button onclick="restart()">Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==== ALERT BOX ==== -->
+<div class="alertBox" id="alertBox">
+  <div class="alertContent">
+    <h3 id="alertMessage"></h3>
+    <button onclick="playAgain()">Play Again</button>
+    <button onclick="goHome()">Home</button>
+  </div>
+</div>
+
+<script>
+let mode = null;
+let difficulty = null;
+let board = ["", "", "", "", "", "", "", "", ""];
+let currentPlayer = "X";
+let gameOver = false;
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function chooseMode(m) {
+  mode = m;
+  if (m === '1') showPage('difficulty');
+  else startGame();
+}
+
+function startGame(diff = null) {
+  difficulty = diff;
+  showPage('game');
+  document.getElementById('gameTitle').innerText =
+    mode === '1' ? `1 Player - ${difficulty.toUpperCase()} Mode` : '2 Player Game';
+  board = ["", "", "", "", "", "", "", "", ""];
+  currentPlayer = "X";
+  gameOver = false;
+  renderBoard();
+  updateStatus();
+}
+
+function renderBoard() {
+  const boardDiv = document.getElementById('board');
+  boardDiv.innerHTML = "";
+  board.forEach((cell, i) => {
+    const div = document.createElement('div');
+    div.className = "cell";
+    div.innerText = cell;
+    div.onclick = () => handleClick(i);
+    boardDiv.appendChild(div);
+  });
+}
+
+function handleClick(i) {
+  if (gameOver || board[i]) return;
+  board[i] = currentPlayer;
+  renderBoard();
+
+  if (checkWin(board, currentPlayer)) {
+    showAlert(`${currentPlayer} Wins!`);
+    gameOver = true;
+  } else if (board.every(c => c)) {
+    showAlert("It's a Draw!");
+    gameOver = true;
+  } else {
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    updateStatus();
+    if (mode === '1' && currentPlayer === 'O' && !gameOver) {
+      setTimeout(aiMove, 500);
+    }
+  }
+}
+
+function aiMove() {
+  let move;
+  if (difficulty === 'easy') move = easyAI();
+  else if (difficulty === 'medium') move = mediumAI();
+  else move = hardAI();
+
+  board[move] = "O";
+  renderBoard();
+
+  if (checkWin(board, "O")) {
+    showAlert("So sorry you lose!!");
+    gameOver = true;
+  } else if (board.every(c => c)) {
+    showAlert("It's a Draw!");
+    gameOver = true;
+  } else currentPlayer = "X";
+  updateStatus();
+}
+
+function easyAI() {
+  const empty = board.map((v, i) => v ? null : i).filter(v => v !== null);
+  return empty[Math.floor(Math.random() * empty.length)];
+}
+
+function mediumAI() {
+  for (let i = 0; i < 9; i++) {
+    if (!board[i]) {
+      board[i] = "O";
+      if (checkWin(board, "O")) { board[i] = ""; return i; }
+      board[i] = "";
+    }
+  }
+  for (let i = 0; i < 9; i++) {
+    if (!board[i]) {
+      board[i] = "X";
+      if (checkWin(board, "X")) { board[i] = ""; return i; }
+      board[i] = "";
+    }
+  }
+  return easyAI();
+}
+
+function hardAI() { return bestMove(); }
+
+function bestMove() {
+  let bestScore = -Infinity, move;
+  for (let i = 0; i < 9; i++) {
+    if (!board[i]) {
+      board[i] = "O";
+      let score = minimax(board, 0, false);
+      board[i] = "";
+      if (score > bestScore) { bestScore = score; move = i; }
+    }
+  }
+  return move;
+}
+
+function minimax(b, depth, isMax) {
+  if (checkWin(b, "O")) return 10 - depth;
+  if (checkWin(b, "X")) return depth - 10;
+  if (b.every(c => c)) return 0;
+
+  if (isMax) {
+    let best = -Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = "O";
+        best = Math.max(best, minimax(b, depth + 1, false));
+        b[i] = "";
+      }
+    }
+    return best;
+  } else {
+    let best = Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = "X";
+        best = Math.min(best, minimax(b, depth + 1, true));
+        b[i] = "";
+      }
+    }
+    return best;
+  }
+}
+
+function checkWin(b, p) {
+  const winLines = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  return winLines.some(line => line.every(i => b[i] === p));
+}
+
+function updateStatus() {
+  if (!gameOver)
+    document.getElementById('status').innerText = `Turn: ${currentPlayer}`;
+}
+
+function restart() {
+  showPage('menu');
+}
+
+function showAlert(msg) {
+  const alertBox = document.getElementById('alertBox');
+  document.getElementById('alertMessage').innerText = msg;
+  alertBox.style.display = 'flex';
+}
+
+// Track how many times the Play Again button is clicked
+let playAgainCount = 0;
+
+function playAgain() {
+  playAgainCount++;
+
+  // 1️⃣ First press → Show ad or social link
+  if (playAgainCount % 2 === 1) {
+    // 🔹 Replace this link with your actual ad / social URL
+    window.open("https://www.effectivegatecpm.com/qeygvtvt?key=e9fc6edd5f6c5de7da8785786544fa0f", "_blank");
+
+    
+  // 2️⃣ Second press → Restart the game (for both 1P and 2P)
+  } else {
+    document.getElementById('alertBox').style.display = 'none';
+    startGame(difficulty);
+  }
+}
+
+
+
+function goHome() {
+  document.getElementById('alertBox').style.display = 'none';
+  restart();
+}
+</script>
+</body>
+</html>

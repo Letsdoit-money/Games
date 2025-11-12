@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Games Hub</title>
+  <style>
+    /* ==== GENERAL STYLING ==== */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* ==== GRID LAYOUT FOR ADS ==== */
+    .layout {
+      display: grid;
+      grid-template-areas:
+        "top top top"
+        "left center right"
+        "bottom bottom bottom";
+      grid-template-columns: 120px auto 120px;
+      grid-template-rows: 80px auto 80px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .ad-top, .ad-bottom, .ad-left, .ad-right {
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .ad-top    { grid-area: top; }
+    .ad-left   { grid-area: left; }
+    .ad-right  { grid-area: right; }
+    .ad-bottom { grid-area: bottom; }
+
+    /* ==== CENTER CONTENT ==== */
+    .center {
+      grid-area: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #00fff5;
+      text-shadow: 0 0 20px #00fff5, 0 0 40px #00fff5;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    /* ==== GAME IMAGE GRID ==== */
+    .game-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 30px;
+      width: 90%;
+      max-width: 800px;
+      justify-items: center;
+    }
+
+    .game-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,255,245,0.3);
+      transition: all 0.3s ease;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .game-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #00fff5;
+    }
+
+    .game-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .game-card img:hover {
+      transform: scale(1.08);
+    }
+
+    .game-title {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      color: #00fff5;
+      padding: 8px 0;
+      font-weight: bold;
+      text-shadow: 0 0 10px #00fff5;
+    }
+
+    /* ==== RESPONSIVE ==== */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2em; }
+      .game-card { width: 160px; height: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- ==== AD PLACEMENTS ==== -->
+    <div class="ad-top">
+      <!-- 🔹 INSERT YOUR TOP AD LINK / SCRIPT HERE -->
+      <span>Top Ad</span>
+    </div>
+    <div class="ad-left">
+      <!-- 🔹 INSERT YOUR LEFT AD LINK / SCRIPT HERE -->
+      <span>Left Ad</span>
+    </div>
+    <div class="ad-right">
+      <!-- 🔹 INSERT YOUR RIGHT AD LINK / SCRIPT HERE -->
+      <span>Right Ad</span>
+    </div>
+    <div class="ad-bottom">
+      <!-- 🔹 INSERT YOUR BOTTOM AD LINK / SCRIPT HERE -->
+      <span>Bottom Ad</span>
+    </div>
+
+    <!-- ==== CENTER CONTENT ==== -->
+    <div class="center">
+      <h1>🎮 Games Hub</h1>
+      <p>Select a game to play</p>
+
+      <div class="game-gallery">
+        <!-- ==== GAME CARD EXAMPLE ==== -->
+        <div class="game-card">
+          <a href="X%20O%20game.html">
+            <img src="XOgame logo.png" alt="X O Game" />
+          </a>
+          <div class="game-title">X O Game</div>
+        </div>
+
+        <!-- 🔹 Add more games below following same structure -->
+        <!--
+        <div class="game-card">
+          <a href="snake.html">
+            <img src="snake.jpg" alt="Snake Game" />
+          </a>
+          <div class="game-title">Snake Game</div>
+        </div>
+        --><div class="game-card">
+          <a href="snake.html">
+            <img src="Flappy Bird.jpg" alt="Flappy Bird" />
+          </a>
+          <div class="game-title">Flappy Bird<br>coming soon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
